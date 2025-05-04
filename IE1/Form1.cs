@@ -15,13 +15,14 @@ namespace IE1
         {
             InitializeComponent();
 
-            // Initialize fields in the constructor to avoid referencing non-static fields in field initializers
             colaClinica = new Cola();
             colaGuardia = new Cola();
             colaPediatria = new Cola();
+
             colaClinica.Leer("clinica.txt");
             colaGuardia.Leer("guardia.txt");
             colaPediatria.Leer("pediatria.txt");
+
             clinica = new frmClinica(colaClinica);
             guardia = new frmGuardia(colaGuardia);
             pediatría = new frmPediatría(colaPediatria);
@@ -53,23 +54,7 @@ namespace IE1
 
         private void cmdInsertar_Click(object sender, EventArgs e)
         {
-            if (
-                String.IsNullOrEmpty(txtApellido.Text) ||
-                String.IsNullOrEmpty(txtNombre.Text) ||
-                String.IsNullOrEmpty(txtDNI.Text) ||
-                String.IsNullOrEmpty(cmbEspecialidad.Text))
-            {
-                MessageBox.Show("Por favor, complete todos los campos.");
-                return;
-            }
-
-            if (txtDNI.Text.Length > 8)
-            {
-                MessageBox.Show("El DNI debe tener 8 dígitos máximo.");
-                return;
-            }
-
-            else
+            if (ValidarInformacion())
             {
                 Paciente paciente = new Paciente(txtDNI.Text, txtApellido.Text, txtNombre.Text, cmbEspecialidad.Text);
                 int cuenta;
@@ -173,23 +158,7 @@ namespace IE1
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
-            if (
-                String.IsNullOrEmpty(txtApellido.Text) ||
-                String.IsNullOrEmpty(txtNombre.Text) ||
-                String.IsNullOrEmpty(txtDNI.Text) ||
-                String.IsNullOrEmpty(cmbEspecialidad.Text))
-            {
-                MessageBox.Show("Por favor, complete todos los campos.");
-                return;
-            }
-
-            if (txtDNI.Text.Length > 8)
-            {
-                MessageBox.Show("El DNI debe tener 8 dígitos máximo.");
-                return;
-            }
-
-            else
+            if (ValidarInformacion())
             {
                 string dni = txtDNI.Text;
                 string especialidad = cmbEspecialidad.Text;
@@ -278,6 +247,24 @@ namespace IE1
             txtNombre.Clear();
             txtDNI.Clear();
             cmbEspecialidad.SelectedIndex = -1;
+        }
+
+        public bool ValidarInformacion()
+        {
+            if (String.IsNullOrEmpty(txtApellido.Text) ||
+                String.IsNullOrEmpty(txtNombre.Text) ||
+                String.IsNullOrEmpty(txtDNI.Text) ||
+                String.IsNullOrEmpty(cmbEspecialidad.Text))
+            {
+                MessageBox.Show("Por favor, complete todos los campos.");
+                return false;
+            }
+            else if (txtDNI.Text.Length > 8)
+            {
+                MessageBox.Show("El DNI debe tener 8 dígitos máximo.");
+                return false;
+            }
+            return true;
         }
     }
 }
