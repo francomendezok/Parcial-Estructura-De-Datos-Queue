@@ -195,49 +195,38 @@ namespace IE1
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(txtDNI.Text))
+            if (cmbEspecialidad.SelectedIndex == -1)
             {
-                MessageBox.Show("Por favor, provea el DNI del paciente a eliminar.");
+                MessageBox.Show("Por favor, seleccione especialidad al cual cancelar el turno.");
                 return;
             }
 
-            else if (txtDNI.Text.Length > 8)
-            {
-                MessageBox.Show("El DNI debe tener 8 dígitos máximo.");
-                return;
-            }
 
             else
             {
-                string dni = txtDNI.Text;
                 string especialidad = cmbEspecialidad.Text;
-                bool eliminado = false;
 
                 switch (especialidad)
                 {
                     case "Clínica":
-                        eliminado = colaClinica.CancelarTurno(dni);
+                        colaClinica.Eliminar();
                         colaClinica.Grabar("clinica.txt");
-                        clinica.mostrarConsultario();
                         colaClinica.Listar(lstClinica);
                         break;
                     case "Guardia":
-                        eliminado = colaGuardia.CancelarTurno(dni);
+                        colaGuardia.Eliminar();
                         colaGuardia.Grabar("guardia.txt");
-                        guardia.mostrarConsultario();
                         colaGuardia.Listar(lstGuardia);
                         break;
                     case "Pediatría":
-                        eliminado = colaPediatria.CancelarTurno(dni);
+                        colaPediatria.Eliminar();
                         colaPediatria.Grabar("pediatria.txt");
-                        pediatría.mostrarConsultario();
                         colaPediatria.Listar(lstPediatria);
                         break;
                     default:
                         MessageBox.Show("Especialidad no válida.");
                         break;
                 }
-                if (eliminado) Limpiar();
             }
         }
 
